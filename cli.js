@@ -71,15 +71,12 @@ async function waitForComposer(page) {
 }
 
 async function fillComposer(page, prompt) {
-  // ProseMirror contenteditable — pasting via clipboard is fast and reliable for long prompts.
+  // CDP Input.insertText, not clipboard+Meta+V: the synthesized OS paste doesn't
+  // reflect the in-page clipboard write for long content under headed Playwright,
+  // so the composer stays empty and submit silently no-ops.
   const composer = await page.waitForSelector(COMPOSER);
   await composer.click();
-  await page.evaluate(async (text) => {
-    await navigator.clipboard.writeText(text);
-  }, prompt);
-  const mod = process.platform === 'darwin' ? 'Meta' : 'Control';
-  await page.keyboard.press(`${mod}+V`);
-  // Give ProseMirror a tick to settle before submit.
+  await page.keyboard.insertText(prompt);
   await page.waitForTimeout(200);
 }
 
