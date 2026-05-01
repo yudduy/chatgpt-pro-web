@@ -1,0 +1,12 @@
+# Persistent Playwright profile — contains your authenticated chatgpt.com session.
+# NEVER commit. Each user creates their own via `npm run auth`.
+profile/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,27 @@
+{
+  "name": "chatgpt-pro-web",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "CLI for chatgpt.com (Pro/Plus) — persistent Playwright profile, tolerates 30+ min Pro responses",
+  "bin": {
+    "chatgpt-pro-web": "cli.js",
+    "chatgpt-pro-web-auth": "auth.js"
+  },
+  "scripts": {
+    "auth": "node auth.js",
+    "start": "node cli.js"
+  },
+  "keywords": ["chatgpt", "openai", "gpt-5-pro", "o3-pro", "playwright", "cli"],
+  "license": "MIT",
+  "author": "Duy Nguyen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yudduy/chatgpt-pro-web.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0"
+  }
+}
