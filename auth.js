@@ -49,9 +49,7 @@ while (true) {
   const authCookieNames = [
     '__Secure-next-auth.session-token',
     '__Secure-next-auth.session-token.0',
-    '__Host-next-auth.csrf-token',
     '__Secure-authjs.session-token',
-    'auth0_compat',
   ];
   const authCookies = cookies.filter((c) => authCookieNames.includes(c.name) && c.value && c.value.length > 20);
 
@@ -68,7 +66,7 @@ while (true) {
     })
     .catch(() => null);
 
-  const meLoggedIn = me && me.id && !String(me.id).startsWith('ua-');
+  const meLoggedIn = me && me.id && !String(me.id).startsWith('ua-') && (me.email || me.name);
   const cookieLoggedIn = authCookies.length > 0;
   if (meLoggedIn || cookieLoggedIn) {
     const who = (me && (me.email || me.name || me.id)) || authCookies.map((c) => c.name).join(',');
