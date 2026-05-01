@@ -222,6 +222,26 @@ async function main() {
     process.exit(1);
   }
 
+  if (!opts.convUrl) {
+    const convId = (convUrl.match(/\/c\/([a-f0-9-]+)/) || [])[1];
+    if (convId) {
+      const renamed = await page.evaluate(async (id) => {
+        const s = await fetch('/api/auth/session', { credentials: 'include' });
+        if (!s.ok) return { ok: false, stage: 'session', status: s.status };
+        const token = (await s.json()).accessToken;
+        if (!token) return { ok: false, stage: 'token' };
+        const r = await fetch(`/backend-api/conversation/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          credentials: 'include',
+          body: JSON.stringify({ title: 'CLI' }),
+        });
+        return { ok: r.ok, status: r.status };
+      }, convId).catch((e) => ({ ok: false, error: String(e) }));
+      if (!renamed.ok) console.error(`Title rename failed: ${JSON.stringify(renamed)}`);
+    }
+  }
+
   if (opts.output) {
     writeFileSync(opts.output, text);
     process.stdout.write(convUrl);
